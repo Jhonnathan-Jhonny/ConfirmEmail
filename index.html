@@ -70,7 +70,6 @@
       transition: 0.3s ease;
     }
 
-    
     .button:hover {
       opacity: 0.9;
       transform: translateY(-2px);
@@ -82,14 +81,46 @@
   <div class="container">
     <div class="icon">✓</div>
 
-    <h1>Email Confirmado!</h1>
+    <h1>Confirmando Email...</h1>
 
-    <p>
-      Seu endereço de email foi confirmado com sucesso.
-      Agora você já pode voltar ao aplicativo e continuar utilizando normalmente.
+    <p id="message">
+      Aguarde enquanto confirmamos seu endereço de email.
     </p>
 
-    <a href="#" class="button">Voltar ao aplicativo</a>
+    <a href="#" class="button" id="appButton" style="display:none;">
+      Voltar ao aplicativo
+    </a>
   </div>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const confirmationUrl = params.get("confirmation_url");
+
+    if (confirmationUrl) {
+      fetch(confirmationUrl)
+        .then(() => {
+          document.querySelector("h1").innerText = "Email Confirmado!";
+          
+          document.getElementById("message").innerText =
+            "Seu endereço de email foi confirmado com sucesso. Agora você já pode voltar ao aplicativo.";
+
+          document.getElementById("appButton").style.display = "inline-block";
+
+          // Coloque o link do seu app aqui
+          document.getElementById("appButton").href = "seuapp://login";
+        })
+        .catch(() => {
+          document.querySelector("h1").innerText = "Erro na confirmação";
+
+          document.getElementById("message").innerText =
+            "Não foi possível confirmar seu email.";
+        });
+    } else {
+      document.querySelector("h1").innerText = "Link inválido";
+
+      document.getElementById("message").innerText =
+        "O link de confirmação é inválido.";
+    }
+  </script>
 </body>
 </html>
