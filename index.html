@@ -92,35 +92,15 @@
     </a>
   </div>
 
-  <script>
-    const params = new URLSearchParams(window.location.search);
-    const confirmationUrl = params.get("confirmation_url");
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const confirmationUrl = params.get("confirmation_url");
 
-    if (confirmationUrl) {
-      fetch(confirmationUrl)
-        .then(() => {
-          document.querySelector("h1").innerText = "Email Confirmado!";
-          
-          document.getElementById("message").innerText =
-            "Seu endereço de email foi confirmado com sucesso. Agora você já pode voltar ao aplicativo.";
-
-          document.getElementById("appButton").style.display = "inline-block";
-
-          // Coloque o link do seu app aqui
-          document.getElementById("appButton").href = "seuapp://login";
-        })
-        .catch(() => {
-          document.querySelector("h1").innerText = "Erro na confirmação";
-
-          document.getElementById("message").innerText =
-            "Não foi possível confirmar seu email.";
-        });
-    } else {
-      document.querySelector("h1").innerText = "Link inválido";
-
-      document.getElementById("message").innerText =
-        "O link de confirmação é inválido.";
-    }
-  </script>
+  if (confirmationUrl) {
+    window.location.href = decodeURIComponent(confirmationUrl);
+  } else {
+    document.body.innerHTML = "<h1>Link inválido</h1>";
+  }
+</script>
 </body>
 </html>
